@@ -1,6 +1,6 @@
 <?php
 if(!isset($_GET['game'])){
-    $_GET['game'] = 'everquestnext';
+    $_GET['game'] = 'dcuo';
 }
 if(!isset($_GET['maxPosts'])){
     $_GET['maxPosts'] = 10;
@@ -74,7 +74,7 @@ foreach($nodes as $node){
 
         echo '<item>' . PHP_EOL;
 
-        getV3Data($node);
+        getV3Data($node, $game);
 
         echo '</item>' . PHP_EOL;
 
@@ -84,7 +84,7 @@ foreach($nodes as $node){
 
 echo '</channel></rss>';
 
-function getV3Data($node){
+function getV3Data($node, $game){
     $pNodes = $node->getElementsByTagName('p');
     $pTitle = '';
     $pDesc = '';
@@ -99,6 +99,7 @@ function getV3Data($node){
 
     $h3Nodes = $node->getElementsByTagName('h3');
     foreach ($h3Nodes as $reply) {
+
 
         $inodes = $reply->childNodes;
 
@@ -131,7 +132,8 @@ function getV3Data($node){
     $dateNodes = $node->getElementsByTagName('abbr');
     foreach($dateNodes as $date){
         if($date->getAttribute('class') == 'DateTime'){
-            echo '<pubDate>' . date('r', strtotime(str_replace(' at ',' ',$date->getAttribute('title')))) . '</pubDate>' . PHP_EOL;
+            print_r($date->getAttribute('date-time'));
+            echo '<pubDate>' . date('r', $date->getAttribute('data-time')) . '</pubDate>' . PHP_EOL;
         }
     }
 }
